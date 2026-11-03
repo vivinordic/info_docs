@@ -86,23 +86,23 @@ git fetch --all
 
 ### Related Bitbucket repositories (not in West)
 
-Wi-Fi firmware, tests, and shared utilities live in **separate Git repositories** (not part of the West manifest). Clone them with SSH access to Nordic Bitbucket (`bitbucket.nordicsemi.no`):
+Wi-Fi firmware, tests, and shared utilities live in **separate Git repositories** (not part of the West manifest). Clone them with SSH:
 
-| Repository                       | SSH URL                                                                 |
+| Repository                       | SSH URL (Bitbucket Cloud)                                              |
 | -------------------------------- | ----------------------------------------------------------------------- |
-| **`wifi_firmware`**      | `ssh://git@bitbucket.nordicsemi.no:7999/~vivi/wifi_firmware.git`      |
-| **`wifi_firmware_test`** | `ssh://git@bitbucket.nordicsemi.no:7999/~vivi/wifi_firmware_test.git` |
-| **`test_utilities`**     | `ssh://git@bitbucket.nordicsemi.no:7999/~vivi/test_utilities.git`     |
+| **`wifi_firmware`**      | `git@ssh.bitbucket.org:nordicsemi/wifi_firmware.git`                  |
+| **`wifi_firmware_test`** | `git@ssh.bitbucket.org:nordicsemi/wifi_firmware_test.git`             |
+| **`test_utilities`**     | `git@ssh.bitbucket.org:nordicsemi/test_utilities.git`                 |
 
 ```bash
 # siblings of the West workspace (typical layout)
 cd /path/to/parent
-git clone ssh://git@bitbucket.nordicsemi.no:7999/~vivi/wifi_firmware.git
-git clone ssh://git@bitbucket.nordicsemi.no:7999/~vivi/wifi_firmware_test.git
-git clone ssh://git@bitbucket.nordicsemi.no:7999/~vivi/test_utilities.git
+git clone git@ssh.bitbucket.org:nordicsemi/wifi_firmware.git
+git clone git@ssh.bitbucket.org:nordicsemi/wifi_firmware_test.git
+git clone git@ssh.bitbucket.org:nordicsemi/test_utilities.git
 ```
 
-Register your SSH key with Bitbucket Server. Use each repository’s README for build, test, and flash steps that apply to nRF71 Wi-Fi.
+Register your SSH key with **Bitbucket Cloud** (`ssh.bitbucket.org`). Use each repository’s README for build, test, and flash steps that apply to nRF71 Wi-Fi.
 
 **Radio test extension pack** (internal PHY/shell opcodes 64+, `wifi_radio_test_extn`): lives under **`test_utilities/nrf71/phy/radio_test/extn_cmds/`** after cloning `test_utilities`. Install into this workspace’s **`nrf/`** module — see [Radio test extension commands](#radio-test-extension-commands-wifi_radio_test_extn).
 
