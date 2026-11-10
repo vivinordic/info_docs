@@ -23,6 +23,7 @@ This guide describes how to build and program firmware in this West workspace us
 | **West**                    | From the toolchain`PATH`, not a separate `pip install west` on system Python 3.8                                                                                                |
 | **nrfutil `device`**      | **≥ 2.21.0** for **nRF71** (`--family nrf71`); v3.4.0 toolchain may ship an older plugin—upgrade if flashing nRF7120 fails (see [Troubleshooting](#troubleshooting)) |
 | **CMake / Ninja**           | Provided by the toolchain                                                                                                                                                           |
+| **nrf-udev** (Linux only)   | udev rules for Nordic USB devices (VCOM / `ttyACM`); see [Troubleshooting](#nordic-usb--serial-permission-denied-linux-nrf-udev)                                                  |
 
 ### Workspace
 
@@ -532,6 +533,36 @@ Exact paths depend on sysbuild domain names and board.
 **Cause:** `west` is running on **system Python 3.8** (e.g. `~/.local/bin/west`), while this Zephyr tree needs **Python 3.10+**.
 
 **Fix:** Use the toolchain shell (`toolchain launch --shell`) or source `toolchain env`. Confirm `which west` and `python3 --version` point into `~/ncs/toolchains/...`.
+
+---
+
+### Nordic USB / serial permission denied (Linux, nrf-udev)
+
+**What it is for:** **`nrf-udev`** installs udev rules so your user can access Nordic development kits over USB **without root**—mainly the **USB vendor `1915`** interfaces and **`/dev/ttyACM*`** serial ports used for the Zephyr shell, logs, and `nrfutil`/serial workflows. It does **not** grant access to the **SEGGER J-Link debug USB interface** (vendor **`1366`**); for `west flash` / SWD you still need [SEGGER `99-jlink.rules`](#cannot-connect-to-j-link--failed-to-open-connection-generic).
+
+**When you need it:** Permission errors opening **`/dev/ttyACM*`** (`Permission denied`), or serial terminals / test scripts cannot attach to the DK while **`nrfutil device list`** still shows the board.
+
+**Install** (package from [NordicSemiconductor/nrf-udev](https://github.com/NordicSemiconductor/nrf-udev); download to `/tmp` first if the file is not there):
+
+```bash
+sudo dpkg -i /tmp/nrf-udev_1.0.1-all.deb
+```
+
+Unplug and replug the DK, or run `sudo udevadm control --reload-rules && sudo udevadm trigger`. If serial nodes are still **`root:dialout`** only, add your user to **`dialout`**: `sudo usermod -aG dialout $USER` and log in again.
+
+---
+
+### `Cannot connect to J-Link` / `Failed to open connection` (Generic)
+
+**Cause:** On Linux, the **SEGGER USB debug interface** (USB vendor **1366**, e.g. product **1065** / **1069** on DKs) is often **`root:root` with mode `664`**. **`nrf-udev`** only opens Nordic **1915** devices (VCOM), not the J-Link bulk interface. **`nrfutil device list`** may still work while **`west flash`** / **recover** fail.
+
+**Fix:** Install SEGGER’s **`99-jlink.rules`** (bundled with J-Link), reload udev, replug USB:
+
+```bash
+bash info_docs/setting_up_workspace/install-segger-jlink-udev.sh
+```
+
+Verify: `JLinkExe` should connect via USB (not `FAILED: Cannot connect to J-Link`).
 
 ---
 
