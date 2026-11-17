@@ -83,7 +83,7 @@ west flash
    ```
 4. On the **test PC**, start the iPerf UDP server:
 
-   For an automated sweep, use `test_utilities/nrf71/phy/coex_test/coex_test.py` (default: Wi‑Fi scan/connect and `wifi_run_tput` per attenuation step; add **`--with-ble`** for peer setup and `bt_run_tput` together with Wi‑Fi).
+   For an automated sweep, use `test_utilities/nrf71/phy/coex_test/coex_test.py` (default: Wi‑Fi scan/connect and `wifi_run_tput` per attenuation step; add **`--with-ble`** for peer setup and `bt_run_tput` together with Wi‑Fi). For **dual attenuators** (Wi‑Fi path swept, BLE path fixed) and overlapping Wi‑Fi + BLE throughput, use **`wifi_coex_sweep.py`** (see `coex_test/README.md`).
 
    ```bash
    iperf -s -i 1 -u -p 5001
