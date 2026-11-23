@@ -682,6 +682,14 @@ NCS **3.4.0** `tools-versions-linux.yml` references device **2.20.0**, which sti
 
 ## Further reading
 
+### Other info_docs setup guides
+
+- [Setting up a venv](../setting_up_softwares/setting_up_venv.md) — Python on the test PC (separate from toolchain Python)
+- [Lab Wi‑Fi AP](../setting_up_devices/setting_up_AP.md) — telnet, iperf
+- [Setting up AI](../setting_up_softwares/setting_up_AI.md) — Cursor skills and Nordic AI Skills Library
+
+### NCS and workspace
+
 - NCS installation: `nrf/doc/nrf/installation/install_ncs.rst`
 - Updating repos and toolchain: `nrf/doc/nrf/installation/updating.rst` (`updating_repos`, `using_toolchain_environment`)
 - West manifest: `zephyr/doc/develop/west/index.rst`

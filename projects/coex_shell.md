@@ -38,6 +38,14 @@ git -C nrf remote -v
 
 General build, flash, and toolchain setup: [nRF7120 NCS West guide](../setting_up_workspace/nrf7120-ncs-west-guide.md).
 
+**Bench and test PC setup** (in **info_docs**):
+
+| Topic | Guide |
+| ----- | ----- |
+| Lab Wi‑Fi AP (telnet, iperf) | [setting_up_AP.md](../setting_up_devices/setting_up_AP.md) |
+| Python venv / **uv** | [setting_up_venv.md](../setting_up_softwares/setting_up_venv.md) |
+| Cursor Agent Skills | [setting_up_AI.md](../setting_up_softwares/setting_up_AI.md) |
+
 ---
 
 ## Building the DUT application (nRF7120 DK)
@@ -50,7 +58,7 @@ From the sample directory (with the NCS toolchain environment active):
 
 ```bash
 cd nrf/samples/wifi/coexistence_shell
-west build -p -b nrf7120dk/nrf7120/cpuapp -- -DSB_CONFIG_WIFI_NRF70=n -DCONFIG_NRF71_SR_COEX_DRIVER=y
+west build -p -b nrf7120dk/nrf7120/cpuapp -- -DCONFIG_NRF_WIFI_LP_RX=n -DCONFIG_NRF_WIFI_LOW_POWER=n
 west flash
 ```
 
@@ -81,7 +89,7 @@ west flash
    ```text
    peripheral
    ```
-4. On the **test PC**, start the iPerf UDP server:
+4. On the **test PC**, configure the [lab AP](../setting_up_devices/setting_up_AP.md), use a [Python venv](../setting_up_softwares/setting_up_venv.md) for automation if needed, and start the iPerf UDP server (or use script-managed iperf — see AP guide):
 
    For an automated sweep, use `test_utilities/nrf71/phy/coex_test/coex_test.py` (default: Wi‑Fi scan/connect and `wifi_run_tput` per attenuation step; add **`--with-ble`** for peer setup and `bt_run_tput` together with Wi‑Fi). For **dual attenuators** (Wi‑Fi path swept, BLE path fixed) and overlapping Wi‑Fi + BLE throughput, use **`wifi_coex_sweep.py`** (see `coex_test/README.md`).
 
